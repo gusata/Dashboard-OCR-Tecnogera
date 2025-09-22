@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+html{
+  background-color: #EEEEEE;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono)
+  --font-sunflower: var(--font-sunflower);
+}
