@@ -8,7 +8,7 @@ export default function Page1() {
             <span className="text- from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent bg-clip-text">Dashboard</span>
         </div>
 
-        <div className="grid text-one grid-cols-3 grid-rows-3 gap-7">
+        <div className="grid text-one grid-cols-2 grid-rows-2 gap-7">
 
             {/* 1ª linha */}
             <div className="col-span-2 border-b-8 p-2 border-border rounded-4xl h-96 bg-white" >
@@ -52,14 +52,6 @@ export default function Page1() {
                 </div>
             </div>
 
-            <div className="rounded-4xl border-b-8 border-border gap-2 p-2 justify-center flex flex-col items-center bg-white row-span-2" >
-                <div className="flex justify-start items-center pl-3 w-full">
-                    <span className="m-2 font-semibold text-xl flex p-2.5">Ultimos processados</span>
-                </div>
-                <div className="justify-center flex items-center bg-back h-11/12 w-full border-border border-3 self-end rounded-3xl">
-                    
-                </div>
-            </div>  
 
             {/* 2ª linha */}
             <div className="rounded-4xl border-b-8 border-border bg-white h-80" />
