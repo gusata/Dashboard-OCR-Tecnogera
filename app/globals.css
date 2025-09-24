@@ -10,4 +10,7 @@ html{
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono)
   --font-sunflower: var(--font-sunflower);
+  --color-one: #1F1F1F;
+  --color-border: #D2D2D2;
+  --color-back: #EEEEEE;
 }

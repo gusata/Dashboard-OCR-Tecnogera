@@ -13,7 +13,7 @@ const items = [
 
 export default function Sidebar() {
   return (
-    <aside className="h-screen fixed w-64 bg-[#EEEEEE] text-[#1F1F1F] flex flex-col justify-between font-sunflower m-1">
+    <aside className="h-screen fixed w-64 bg-back text-one flex flex-col justify-between font-sunflower m-1">
       {/* Top Section */}
       <div>
         <div className="text-2xl font-bold items-center flex justify-center font-sunflower">
