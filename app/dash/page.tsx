@@ -1,14 +1,38 @@
-import { ArrowDown, ArrowUp, File } from "lucide-react";
+"use client"
+import * as React from "react";
+import {
+  ChartContainer,
+  BarPlot,
+  LinePlot,
+  ChartsXAxis,
+  ChartsYAxis,
+  ChartsTooltip,
+  ChartsLegend,
+  MarkPlot,
+  markElementClasses,
+} from "@mui/x-charts";
+import { File, ArrowUp, ArrowDown } from "lucide-react";
+
+import { chartsTooltipClasses } from "@mui/x-charts/ChartsTooltip";
+
+const fmtNum = (v: number | null) =>
+  v == null ? "–" : v.toLocaleString("pt-BR");
+
+const fmtPct = (v: number | null) =>
+  v == null ? "–" : `${v}%`;
+
 
 export default function Page1() {
+     const xLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"];
+
   return (
-    <section className="min-h-screen relative justify-self-end text-one w-10/12 gap-7 px-6 py-4">
+    <section className="min-h-screen relative justify-self-end w-full text-one gap-7 px-6 py-4" id="dash">
 
         <div className="pb-5">
             <span className="text- from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent bg-clip-text">Dashboard</span>
         </div>
 
-        <div className="grid text-one grid-cols-2 grid-rows-2 gap-7">
+        <div className="grid text-one grid-cols-2 grid-rows-2 gap-3">
 
             {/* 1ª linha */}
             <div className="col-span-2 border-b-8 p-2 border-border rounded-4xl h-96 bg-white" >
@@ -54,7 +78,52 @@ export default function Page1() {
 
 
             {/* 2ª linha */}
-            <div className="rounded-4xl border-b-8 border-border bg-white h-80" />
+            <div className="rounded-4xl border-b-8 col-span-2 flex justify-center items-center p-10 border-border bg-white h-80" >
+                    <ChartContainer
+                        
+                        xAxis={[{ scaleType: "band", data: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul"] }]}
+                        yAxis={[
+                            { id: "left",  scaleType: "linear", position: "left" },
+                            { id: "right", scaleType: "linear", position: "right", min: 0, max: 100 },
+                        ]}
+                        series={[
+                            { type: "bar",  label: "Abertos",    data: [872,875,863,813,874,931,962], valueFormatter: fmtNum },
+                            { type: "bar",  label: "Resolvidos", data: [782,750,686,605,633,700,844], valueFormatter: fmtNum },
+                            { type: "bar",  label: "Backlog",    data: [ 90,125,177,208,241,231,118], valueFormatter: fmtNum },
+                            // 👇 apontando a linha para o eixo da direita
+                            { type: "line", label: "% Resolução", data: [90,56,79,74,72,75,88], yAxisId: "right", valueFormatter: fmtPct },
+                        
+                        ]}
+                         sx={{
+                            [`& .${chartsTooltipClasses.root} .${chartsTooltipClasses.valueCell}`]: {
+                            color: 'red',
+                            borderRadius: 20,
+                            },
+                             [`& .${markElementClasses.highlighted}`]: {
+                            r: 10,
+                            strokeWidth: 2,
+                            },
+                        }}
+
+
+                        
+                        
+                    >
+                    <BarPlot borderRadius={9} />
+                    <LinePlot  />
+                    <MarkPlot />
+                    <ChartsXAxis />
+                    <ChartsYAxis axisId="left" />
+                    <ChartsYAxis axisId="right" />
+                    <ChartsLegend />
+                    {/* Tooltip mostrando TODAS as séries do ponto do eixo X */}
+                    <ChartsTooltip trigger="axis"
+                    sx={{
+                            [`.${chartsTooltipClasses.paper}`]: {borderRadius: 3 },
+                        }}
+                    />
+                    </ChartContainer>
+            </div>
 
         </div>
 

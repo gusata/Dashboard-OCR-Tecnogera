@@ -1,17 +1,27 @@
 "use client"
 
-import { LayoutDashboard, Home, FileText, Users, Settings, LogOut } from "lucide-react"
-import Image from 'next/image'
+import { LayoutDashboard, Home, Files, FileCheck2, Settings, LogOut } from "lucide-react"
+import Image from 'next/image'               // ✅ default import
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { Link as LinkIcon } from "lucide-react";
 
-const items = [
-  { title: "Dashboard", icon: LayoutDashboard, url: "#" },
-  { title: "Home", icon: Home, url: "#" },
-  { title: "Documents", icon: FileText, url: "#" },
-  { title: "Users", icon: Users, url: "#" },
-  { title: "Settings", icon: Settings, url: "#" },
-]
+type Item = {
+  title: string;
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+};
+
+const items: Item[] = [
+  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Arquivos", href: "/files", icon: Files },
+  { title: "Processados", href: "/processados", icon: FileCheck2 },
+  { title: "Configurações", href: "/settings", icon: Settings },
+];
 
 export default function Sidebar() {
+const pathname = usePathname(); // ✅ agora existe
+
   return (
     <aside className="h-screen fixed w-64 bg-back text-one flex flex-col justify-between font-sunflower m-1">
       {/* Top Section */}
@@ -21,18 +31,23 @@ export default function Sidebar() {
         </div>
         <nav className="mt-6">
           <ul className="space-y-2">
-            {items.map((item) => (
+          {items.map((item) => {
+            const active = pathname === item.href || pathname.startsWith(item.href + "/");
+            return (
               <li key={item.title}>
-                <a
-                  href={item.url}
-                  className="flex items-center gap-3 px-6 py-3 hover:bg-gray-300 rounded-full transition-all"
+                <Link
+                  href={item.href}
+                  prefetch               // ✅ no Link, não no ícone
+                  className={`flex items-center gap-3 px-6 py-3 rounded-full transition
+                    ${active ? "bg-gray-300 font-semibold" : "hover:bg-gray-200"}`}
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </li>
-            ))}
-          </ul>
+            );
+          })}
+        </ul>
         </nav>
       </div>
       

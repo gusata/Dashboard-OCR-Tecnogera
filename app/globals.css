@@ -14,3 +14,8 @@ html{
   --color-border: #D2D2D2;
   --color-back: #EEEEEE;
 }
+
+
+.MuiChartsTooltipContainer-row {
+  border-radius: 100px;
+}
