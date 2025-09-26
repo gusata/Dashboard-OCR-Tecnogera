@@ -26,7 +26,7 @@ export default function Page1() {
      const xLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"];
 
   return (
-    <section className="min-h-screen relative justify-self-end w-full text-one gap-7 px-6 py-4" id="dash">
+    <section className="min-h-screen relative justify-self-end w-full text-one gap-7 px-6" id="dash">
 
         <div className="pb-5">
             <span className="text- from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent bg-clip-text">Dashboard</span>
@@ -52,7 +52,7 @@ export default function Page1() {
                                <span className="bg-green-300 py-1 px-3 rounded-2xl border-3 text-green-800 border-green-800 font-semibold flex gap-2"> <ArrowUp className="text-green-800"/> 13%</span>
                            </div>
                            <div className="text-one/70 font-semibold w-20 flex justify-start">
-                               <span className="leading-4">A mais que ontem</span>
+                               <span className="leading-4">Em relação ao dia anterior</span>
                            </div>
                        </div>
                    </div>
@@ -68,7 +68,7 @@ export default function Page1() {
                                <span className="bg-red-300 py-1 px-3 rounded-2xl border-3 text-red-800 border-red-800 font-semibold flex gap-2"> <ArrowDown className="text-red-800"/> 26%</span>
                            </div>
                            <div className="text-one/70 font-semibold w-20 flex justify-start">
-                               <span className="leading-4">A menos que ontem</span>
+                               <span className="leading-4">Em relação a semana anterior</span>
                            </div>
                        </div>
                    </div>
@@ -87,11 +87,11 @@ export default function Page1() {
                             { id: "right", scaleType: "linear", position: "right", min: 0, max: 100 },
                         ]}
                         series={[
-                            { type: "bar",  label: "Abertos",    data: [872,875,863,813,874,931,962], valueFormatter: fmtNum },
-                            { type: "bar",  label: "Resolvidos", data: [782,750,686,605,633,700,844], valueFormatter: fmtNum },
-                            { type: "bar",  label: "Backlog",    data: [ 90,125,177,208,241,231,118], valueFormatter: fmtNum },
+                            { type: "bar",  label: "total",    data: [872,875,863,813,874,931,962], valueFormatter: fmtNum },
+                            { type: "bar",  label: "Lidos", data: [782,750,686,605,633,700,844], valueFormatter: fmtNum },
+                            { type: "bar",  label: "A Verificar",    data: [ 90,125,177,208,241,231,118], valueFormatter: fmtNum },
                             // 👇 apontando a linha para o eixo da direita
-                            { type: "line", label: "% Resolução", data: [90,56,79,74,72,75,88], yAxisId: "right", valueFormatter: fmtPct },
+                            { type: "line", label: "% Acertos", data: [90,56,79,74,72,75,88], yAxisId: "right", valueFormatter: fmtPct },
                         
                         ]}
                          sx={{

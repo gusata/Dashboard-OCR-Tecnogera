@@ -15,7 +15,6 @@ type Item = {
 const items: Item[] = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Arquivos", href: "/files", icon: Files },
-  { title: "Processados", href: "/processados", icon: FileCheck2 },
   { title: "Configurações", href: "/settings", icon: Settings },
 ];
 
@@ -23,7 +22,7 @@ export default function Sidebar() {
 const pathname = usePathname(); // ✅ agora existe
 
   return (
-    <aside className="h-screen fixed w-64 bg-back text-one flex flex-col justify-between font-sunflower m-1">
+    <aside className="h-screen fixed w-64 bg-back text-one flex flex-col justify-between p-2.5 font-sunflower m-1">
       {/* Top Section */}
       <div>
         <div className="text-2xl font-bold items-center flex justify-center font-sunflower">
