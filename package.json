@@ -16,7 +16,10 @@
     "@mui/material": "^7.3.2",
     "@mui/x-charts": "^8.11.3",
     "@mui/x-data-grid": "^8.11.3",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "lucide-react": "^0.544.0",
+    "mongoose": "^8.18.3",
     "next": "15.5.3",
     "react": "19.1.0",
     "react-dom": "19.1.0"
