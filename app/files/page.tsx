@@ -10,6 +10,7 @@ import MuiDialogContent from "@mui/material/DialogContent";
 import MuiDialogActions from "@mui/material/DialogActions";
 import MuiTextField from "@mui/material/TextField";
 import { getPatrimonios } from "../lib/api";
+import Sidebar from "../components/nav";
 
 // --- utils ---
 const dropboxToRaw = (url: string) => {
@@ -32,6 +33,7 @@ type Row = {
   patrimonio?: string;
   checklist?: string;
   filial?: string;
+  data: string;
 };
 
 
@@ -67,6 +69,7 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
   const [fPatrimonio, setFPatrimonio] = React.useState("");
   const [fChecklist, setFChecklist] = React.useState("");
   const [fFilial, setFFilial] = React.useState("");
+  const [fData, setFData] = React.useState("");
 
   // Busca os dados da API na montagem
   React.useEffect(() => {
@@ -106,6 +109,7 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
           patrimonio: it.cod_patrimonio ?? it.patrimonio ?? "",
           checklist: it.checklist ?? "",
           filial: it.filial ?? "",
+          data: it.data ?? "",
         };
       });
       setRows(mapped);
@@ -124,6 +128,7 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
     setFPatrimonio(row.patrimonio ?? "");
     setFChecklist(row.checklist ?? "");
     setFFilial(row.filial ?? "");
+    setFData(row.data ?? "");
     setOpen(true);
   };
 
@@ -187,6 +192,19 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
         return <Pill tone={tone} className="w-24 truncate">{val || "-"}</Pill>;
       },
     },
+
+    {
+      field: "data",
+      headerName: "Data",
+      flex:1,
+      renderCell: (p) => {
+        const rowPend = isPend(p.row.data);
+        const val = String(p.value ?? "");
+        const tone: "ok" | "bad" = rowPend ? "bad" : (val ? "ok" : "bad");
+        return <Pill tone={tone} className="w-24 truncate">{val || "-"}</Pill>;
+      },
+    },
+
     {
       field: "checklist",
       headerName: "Checklist",
@@ -205,7 +223,7 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
       renderCell: (p) => {
         const rowPend = isPend(p.row.patrimonio);
         const tone: "neutral" | "bad" = rowPend ? "bad" : "neutral";
-        return <Pill tone={tone as any} className="w-24 truncate">{String(p.value ?? " ")}</Pill>;
+        return <Pill tone={tone as any} className="w-24 truncate justify-start flex">{String(p.value ?? " ")}</Pill>;
       },
     },
     {
@@ -229,24 +247,25 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
 
 
   return (
-    <section className="flex flex-col justify-start items-start overflow-y-hidden pl-3" id="arquivos">
+    <section className="flex bg-back flex-col justify-end self-start  items-end overflow-y-hidden pl-3" id="arquivos">
       <div className="pb-5">
         <span className="from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent bg-clip-text">
           Arquivos
         </span>
       </div>
 
-      <div className="grid relative text-one w-full grid-cols-1 h-screen -mb-28 grid-rows-1 gap-3">
-        <div className="border-b-8 p-2 border-border w-full h-6/7 rounded-4xl flex flex-col bg-white">
+      <div className="grid relative text-one w-10/12 grid-cols-1 h-screen -mb-28 grid-rows-1 gap-3">
+        <div className="border-b-8 p-2 border-border w-full h-6/7 rounded-4xl flex flex-col bg-[#f5f5f5]">
           <div className="w-full h-full bg-back rounded-3xl border-3 border-border">
             <div className="h-full w-full flex justify-center items-center">
               <DataGrid
+                
                 rows={rows}
                 columns={columns}
                 loading={loading}
                 disableRowSelectionOnClick
                 // ✅ toolbar oficial
-                slots={{ toolbar: GridToolbar }}
+                showToolbar
                 slotProps={{
                   toolbar: {
                     showQuickFilter: true,
@@ -257,38 +276,47 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
                   paddingX: 1,
                   backgroundColor: "transparent",
                   transition: 10,
+                  justifyContent: "center",
+                  borderRadius: 10,
                   border: "none",
 
                   "& .MuiDataGrid-row": {
                     backgroundColor: "white",
                     marginTop: 1,
+                    
                     borderRadius: 4,
                     borderColor: "transparent",
                     borderBottom: 5,
                     borderBottomColor: "#D2D2D2",
+                    
                   },
 
                   "& .MuiDataGrid-row:hover": {
                     backgroundColor: "white",
-                    borderRadius: 4,
                     borderColor: "transparent",
                     borderBottom: 5,
                     borderBottomColor: "#D2D2D9",
                   },
 
                   "& .MuiDataGrid-container--top, .MuiDataGrid-columnHeaders, .MuiDataGrid-columnHeader": {
-                    borderColor: "transparent",
-                    borderRadius: 3,
-                    backgroundColor: "transparent",
-                    border: "none",
+                    borderRadius: 0,
+                    backgroundColor: "#F5F5F5",
                   },
-                  "& .MuiDataGrid-toolbarContainer": {
-                    backgroundColor: "#EEEEEE",
+
+                  "& .css-1oy5xf-MuiDataGrid-root":{
+                    backgroundColor: "#F5F5F5",  
+                  },
+
+                  "& .MuiDataGrid-row--borderBottom":{
+                    borderColor: "#F5F5F5",
+                  },
+
+                  "& .MuiDataGrid-toolbar": {
+                    backgroundColor: "#F5F5F5",
                     position: "absolute",
+                    borderColor: "transparent",
                     right: 0,
                     zIndex: 10,
-                    borderRadius: 6,
-                    m: 1,
                     p: 0.5,
                   },
                 }}

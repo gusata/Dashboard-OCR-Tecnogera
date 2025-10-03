@@ -14,6 +14,7 @@ import {
 import { File, ArrowUp, ArrowDown } from "lucide-react";
 
 import { chartsTooltipClasses } from "@mui/x-charts/ChartsTooltip";
+import Sidebar from "../components/nav";
 
 const fmtNum = (v: number | null) =>
   v == null ? "–" : v.toLocaleString("pt-BR");

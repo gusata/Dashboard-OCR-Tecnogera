@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className="grid grid-cols-[240px_1fr] min-h-screen">
+      <body className="grid min-h-screen">
         <aside className=""><Sidebar /></aside>
         <main className="p-6">{children}</main>
       </body>

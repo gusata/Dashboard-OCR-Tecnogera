@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 html{
-  background-color: #EEEEEE;
+  background-color: #fcfcfc;
+  --sb-track-color: #707171;
+  --sb-thumb-color: #ff9100;
+  --sb-size: 15px;
 }
 
 @theme inline {
@@ -12,10 +15,12 @@ html{
   --font-sunflower: var(--font-sunflower);
   --color-one: #1F1F1F;
   --color-border: #D2D2D2;
-  --color-back: #EEEEEE;
+  --color-back: ##fcfcfc;
 }
 
+* {
+    scrollbar-color: #ff9100 transparent;
+    scrollbar-track-color: transparent;
+  }
 
-.MuiChartsTooltipContainer-row {
-  border-radius: 100px;
-}
+

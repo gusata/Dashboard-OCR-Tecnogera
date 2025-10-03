@@ -13,7 +13,7 @@ type Item = {
 };
 
 const items: Item[] = [
-  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Dashboard", href: "/dash", icon: LayoutDashboard },
   { title: "Arquivos", href: "/files", icon: Files },
   { title: "Configurações", href: "/settings", icon: Settings },
 ];
