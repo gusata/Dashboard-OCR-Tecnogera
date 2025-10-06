@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Sunflower } from "next/font/google";
 import "./globals.css";
 import Sidebar from "./components/nav";
+import LayoutWrapper from "./components/LayoutWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +34,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="grid min-h-screen">
-        <aside className=""><Sidebar /></aside>
-        <main className="p-6">{children}</main>
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );

@@ -247,9 +247,9 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
 
 
   return (
-    <section className="flex bg-back flex-col justify-end self-start  items-end overflow-y-hidden pl-3" id="arquivos">
-      <div className="pb-5">
-        <span className="from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent bg-clip-text">
+    <section className="flex bg-back flex-col justify-center items-end overflow-y-hidden px-3" id="arquivos">
+      <div className="pb-5 w-10/12">
+        <span className="from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent justify-self-start bg-clip-text">
           Arquivos
         </span>
       </div>

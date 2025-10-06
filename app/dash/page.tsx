@@ -27,16 +27,16 @@ export default function Page1() {
      const xLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"];
 
   return (
-    <section className="min-h-screen relative justify-self-end w-full text-one gap-7 px-6" id="dash">
+    <section className="flex bg-back flex-col justify-center items-end overflow-y-hidden px-3" id="dash">
 
-        <div className="pb-5">
-            <span className="text- from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent bg-clip-text">Dashboard</span>
+        <div className="py-5 w-10/12">
+            <span className="from-amber-500 via-amber-500 to-amber-400 font-medium bg-gradient-to-r text-3xl text-transparent justify-self-start bg-clip-text">Dashboard</span>
         </div>
 
-        <div className="grid text-one grid-cols-2 grid-rows-2 gap-3">
+        <div className="grid w-10/12 text-one grid-cols-2 grid-rows-2 gap-3">
 
             {/* 1ª linha */}
-            <div className="col-span-2 border-b-8 p-2 border-border rounded-4xl h-96 bg-white" >
+            <div className=" col-span-2 border-b-8 p-2 border-border rounded-4xl h-96 bg-[#f5f5f5]" >
                 <div className="pl-7 flex justify-start items-start">
                     <span className="m-2 font-semibold text-xl flex pt-3">Overview</span>
                 </div>
@@ -79,7 +79,7 @@ export default function Page1() {
 
 
             {/* 2ª linha */}
-            <div className="rounded-4xl border-b-8 col-span-2 flex justify-center items-center p-10 border-border bg-white h-80" >
+            <div className="rounded-4xl border-b-8 col-span-2 flex justify-center items-center p-10 border-border bg-[#f5f5f5] h-80" >
                     <ChartContainer
                         
                         xAxis={[{ scaleType: "band", data: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul"] }]}

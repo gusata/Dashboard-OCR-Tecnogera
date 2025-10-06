@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 html{
-  background-color: #fcfcfc;
+  background-color: #f5f5f5;
   --sb-track-color: #707171;
   --sb-thumb-color: #ff9100;
   --sb-size: 15px;
@@ -15,7 +15,7 @@ html{
   --font-sunflower: var(--font-sunflower);
   --color-one: #1F1F1F;
   --color-border: #D2D2D2;
-  --color-back: ##fcfcfc;
+  --color-back: #fcfcfc;
 }
 
 * {
