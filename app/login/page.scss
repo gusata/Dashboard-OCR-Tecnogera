@@ -1,4 +1,7 @@
 // Breakpoint/modo mobile (ajuste como quiser)
+
+@use "sass:math";
+
 @mixin sp-layout {
   @media (max-width: 768px), (pointer: coarse) and (hover: none) {
     @content;
@@ -9,10 +12,15 @@ section {
   overflow: hidden;
 }
 
-@function random_range($min, $max) {
-  $rand: random();
-  $random_range: $min + floor($rand * (($max - $min) + 1));
-  @return $random_range;
+@function random-range($min, $max) {
+  $r: math.random(); // 0..1 (unitless)
+  @return $min + ($r * ($max - $min));
+}
+
+// valor discreto (arredondado)
+@function random-range-int($min, $max) {
+  $r: math.random();
+  @return math.round($min + ($r * ($max - $min)));
 }
 
 #stars {
@@ -21,14 +29,14 @@ section {
   left: 0;
   width: 100%;
   height: 120%;
-  transform: rotate(-45deg);
+  transform: rotate(-25deg);
 }
 
 #star {
   $star-count: 10;
   --star-color: white;
-  --star-tail-length: 8em;
-  --star-tail-height: 2px;
+--star-tail-length: #{math.div(random-range(500em, 750em), 100)};
+  --star-tail-height: 3px;
   --star-width: calc(var(--star-tail-length) / );
   --fall-duration: 20s;
   --tail-fade-duration: var(--fall-duration);
@@ -39,9 +47,9 @@ section {
   width: var(--star-tail-length);
   height: var(--star-tail-height);
   color: var(--star-color);
-  background: linear-gradient(45deg, currentColor, transparent);
+  background: linear-gradient(15deg, currentColor, transparent);
   border-radius: 50%;
-  filter: drop-shadow(0 0 6px currentColor);
+  filter: drop-shadow(0 0 7px currentColor);
   transform: translate3d(104em, 0, 0);
   animation: fall var(--fall-duration) var(--fall-delay) linear infinite, tail-fade var(--tail-fade-duration) var(--fall-delay) ease-out infinite;
   
@@ -52,10 +60,10 @@ section {
 
   @for $i from 1 through $star-count {
     &:nth-child(#{$i}) {
-      --star-tail-length: #{random_range(500em, 750em) / 100};
-      --top-offset: #{random_range(0vh, 10000vh) / 100};
-      --fall-duration: #{random_range(6000, 12000s) / 1000};
-      --fall-delay: #{random_range(0, 10000s) / 1000};
+      --star-tail-length: #{random_range(500em, 750em) * 0.01};
+      --top-offset: #{random_range(0vh, 10000vh) * 0.01};
+      --fall-duration: #{random_range(6000, 12000s) * 0.001};
+      --fall-delay: #{math.div(random_range(0, 10000s), 1000)};
     }
   }
 
