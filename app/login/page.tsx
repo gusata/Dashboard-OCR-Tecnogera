@@ -66,21 +66,10 @@ async function handleSSO() {
           </div>
 
           {/* Cartão do SSO */}
-          <div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl">
-            <div className="grid gap-2">
+          <div className="space-y-4 grid gap-2 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl">
               <label htmlFor="email" className="text-sm text-white/80">
                 E-mail corporativo
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="voce@tecnogera.com.br"
-                className="h-11 w-full rounded-xl border border-white/10 bg-neutral-900/40 px-4 outline-none ring-0 transition focus:border-orange-400/60 focus:bg-neutral-900/60"
-                // Apenas informativo; o Auth da Microsoft ignora este valor.
-                // Se quiser, remova este input.
-              />
-            </div>
 
             {/* Botão SSO Microsoft */}
             <button

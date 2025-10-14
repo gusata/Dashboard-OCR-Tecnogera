@@ -11,6 +11,7 @@ import MuiDialogActions from "@mui/material/DialogActions";
 import MuiTextField from "@mui/material/TextField";
 import { getPatrimonios } from "../lib/api";
 import Sidebar from "../components/nav";
+import { History, HistoryIcon } from "lucide-react";
 
 // --- utils ---
 const dropboxToRaw = (url: string) => {
@@ -18,6 +19,8 @@ const dropboxToRaw = (url: string) => {
   const base = url.replace(/([?&])(dl=\d|raw=1)/g, "").replace(/[?&]$/, "");
   return base + (base.includes("?") ? "&raw=1" : "?raw=1");
 };
+
+const norm = (s?: string) => (s ?? "").trim().toUpperCase();
 
 
 const isPend = (s?: string) => !!s && /^pend/i.test(s.trim());
@@ -35,6 +38,66 @@ type Row = {
   filial?: string;
   data: string;
 };
+
+const [historyOpen, setHistoryOpen] = React.useState(false);
+const [historyLoading, setHistoryLoading] = React.useState(false);
+const [historyItems, setHistoryItems] = React.useState<Row[]>([]);
+const [historyTarget, setHistoryTarget] = React.useState<string>("");
+
+async function loadHistoryByPatrimonio(patrimonio: string) {
+  setHistoryLoading(true);
+  try {
+    // tente usar o filtro do seu backend (ajuste a chave se necessário):
+    const data = await getPatrimonios({
+      page: 1,
+      limit: 200,
+      sort: "processado_em,-1",
+      patrimonio,           // se sua API aceita "cod_patrimonio", troque aqui
+      hasPatrimonio: true,
+    });
+
+    const items: any[] =
+      Array.isArray(data) ? data :
+      Array.isArray((data as any)?.items) ? (data as any).items :
+      Array.isArray((data as any)?.results) ? (data as any).results :
+      [];
+
+    const mapped: Row[] = items.map((it: any) => {
+      const backendId = String(it.id);
+      return {
+        id: backendId,
+        backendId,
+        foto: it.dropbox_link ?? it.foto ?? "",
+        patrimonio: it.cod_patrimonio ?? it.patrimonio ?? "",
+        checklist: it.checklist ?? "",
+        filial: it.filial ?? "",
+        data: it.data ?? "",
+      };
+    });
+
+    // 🔒 filtro exato no cliente (garante 100%)
+    const alvo = norm(patrimonio);
+    const estritamenteIguais = mapped.filter(it => norm(it.patrimonio) === alvo);
+
+    setHistoryItems(estritamenteIguais);
+  } catch (err) {
+    console.error("Falha ao carregar histórico:", err);
+    setHistoryItems([]);
+  } finally {
+    setHistoryLoading(false);
+  }
+}
+
+
+function handleOpenHistory(row: Row) {
+  const alvo = (row.patrimonio ?? "").trim();
+  setHistoryTarget(alvo);
+  setHistoryItems([]);
+  setHistoryOpen(true);
+
+  if (!alvo) return;           // sem patrimônio, só abre o aviso
+  loadHistoryByPatrimonio(alvo);
+}
 
 
 function Pill({
@@ -227,7 +290,7 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
       },
     },
     {
-      field: "acao",
+      field: "validar",
       headerName: "",
       sortable: false,
       filterable: false,
@@ -237,9 +300,27 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
       renderCell: (p) => (
         <button
           onClick={() => handleOpen(p.row as Row)}
-          className="bg-blue-600 h-8/12 w-24 flex justify-center mt-1.5 items-center self-center rounded-lg text-white border-2"
+          className="bg-blue-600 h-8/12 w-24 flex cursor-pointer justify-center mt-1.5 items-center self-center rounded-lg text-white border-2"
         >
           Validar
+        </button>
+      ),
+    },
+    {
+      field: "history",
+      headerName: "",
+      sortable: false,
+      filterable: false,
+      align: "right",
+      headerAlign: "right",
+      flex: 0.6,
+      renderCell: (p) => (
+        <button
+          onClick={() => handleOpenHistory(p.row as Row)}
+          className="bg-blue-600 h-9 w-9 cursor-pointer flex justify-center mt-1.5 items-center self-center rounded-full text-white border-2"
+          title="Ver histórico deste patrimônio"
+        >
+          <HistoryIcon />
         </button>
       ),
     },
@@ -324,11 +405,11 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
             </div>
 
             {/* Dialog com preview grande + inputs */}
-            <MuiDialog open={open} onClose={() => setOpen(false)} maxWidth="md" className="rounded-4xl" fullWidth>
+            <MuiDialog open={open} onClose={() => setOpen(false)} maxWidth="xl" className="rounded-4xl" fullWidth>
               <MuiDialogTitle className="font-semibold">Validar registro</MuiDialogTitle>
               <MuiDialogContent>
                 <MuiBox
-                  sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1.2fr 1fr" }, gap: 2, mt: 1 }}
+                  sx={{ display: "grid", gridTemplateColumns: { xs: "2fr", md: "2fr 1fr 2fr" }, gap: 2, mt: 1 }}
                 >
                   <div className="rounded-xl overflow-hidden border border-zinc-200">
                     {currentRow?.foto ? (
@@ -354,7 +435,7 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
                       value={fChecklist}
                       onChange={(e) => setFChecklist(e.target.value)}
                       fullWidth
-                      size="small"
+                      size="medium"
                     />
                     <MuiTextField
                       label="Filial"
@@ -365,6 +446,15 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
                       placeholder="Ex: MG"
                     />
                   </div>
+                  <iframe
+                    width="100%"
+                    height="400"
+                    style={{ border: 0, borderRadius: "20px" }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBHzFP5pUANGm3v_oDf1DLz3vj1uGxDUhw&q=Tecnogera`}
+                  ></iframe>
                 </MuiBox>
               </MuiDialogContent>
               <MuiDialogActions>
@@ -374,6 +464,93 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
                 </MuiButton>
               </MuiDialogActions>
             </MuiDialog>
+            {/* Dialog de HISTÓRICO por patrimônio */}
+            <MuiDialog
+              open={historyOpen}
+              onClose={() => setHistoryOpen(false)}
+              maxWidth="md"
+              fullWidth
+            >
+                <MuiDialogTitle className="font-semibold">
+                  Histórico {historyTarget ? `— Patrimônio ${historyTarget}` : ""}
+                </MuiDialogTitle>
+
+                <MuiDialogContent dividers>
+                  {!historyTarget && (
+                    <div className="text-sm text-zinc-600">
+                      Esta linha não possui <strong>patrimônio</strong> preenchido. Preencha primeiro para consultar o histórico.
+                    </div>
+                  )}
+
+                  {historyTarget && (
+                    <>
+                      {historyLoading && (
+                        <div className="py-6 text-zinc-600">Carregando histórico…</div>
+                      )}
+
+                      {!historyLoading && historyItems.length === 0 && (
+                        <div className="py-6 text-zinc-600">
+                          Nenhum registro encontrado com patrimônio <strong>{historyTarget}</strong>.
+                        </div>
+                      )}
+
+                      {!historyLoading && historyItems.length > 0 && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {historyItems.map((it) => (
+                            <div
+                              key={it.id}
+                              className="rounded-xl border border-zinc-200 overflow-hidden bg-white"
+                            >
+                              <div className="w-full h-44 bg-zinc-50 flex items-center justify-center">
+                                {it.foto ? (
+                                  <a
+                                    href={dropboxToRaw(it.foto)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block w-full h-full"
+                                    title="Abrir imagem em nova aba"
+                                  >
+                                    <img
+                                      src={dropboxToRaw(it.foto)}
+                                      alt="Foto"
+                                      className="w-full h-full object-contain"
+                                    />
+                                  </a>
+                                ) : (
+                                  <span className="text-zinc-500 text-sm">Sem imagem</span>
+                                )}
+                              </div>
+
+                              <div className="p-3 space-y-1 text-sm">
+                                <div className="flex gap-2 items-center">
+                                  <span className="font-semibold">Patrimônio:</span>
+                                  <span>{it.patrimonio || "-"}</span>
+                                </div>
+                                <div className="flex gap-2 items-center">
+                                  <span className="font-semibold">Checklist:</span>
+                                  <span>{it.checklist || "-"}</span>
+                                </div>
+                                <div className="flex gap-2 items-center">
+                                  <span className="font-semibold">Filial:</span>
+                                  <span>{it.filial || "-"}</span>
+                                </div>
+                                <div className="flex gap-2 items-center">
+                                  <span className="font-semibold">Data:</span>
+                                  <span>{it.data || "-"}</span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </MuiDialogContent>
+
+                <MuiDialogActions>
+                  <MuiButton onClick={() => setHistoryOpen(false)}>Fechar</MuiButton>
+                </MuiDialogActions>
+              </MuiDialog>
           </div>
         </div>
       </div>
