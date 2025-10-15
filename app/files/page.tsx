@@ -453,7 +453,7 @@ const [saving, setSaving] = React.useState(false); //Salvar no banco
                     loading="lazy"
                     allowFullScreen
                     referrerPolicy="no-referrer-when-downgrade"
-                    src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBHzFP5pUANGm3v_oDf1DLz3vj1uGxDUhw&q=Tecnogera`}
+                    src={`https://www.google.com/maps/embed/v1/place?key==Tecnogera`}
                   ></iframe>
                 </MuiBox>
               </MuiDialogContent>
